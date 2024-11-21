@@ -1,0 +1,100 @@
+    <script>
+
+        const BtnDisable = document.getElementById("BtnDisable");
+
+        function removeLoadingBar() {
+            const element = document.getElementById("loadingBar");  // Get the DIV element
+            element.classList.remove("d-none"); // Remove mystyle class from DIV
+            BtnDisable.disabled = true;
+        }
+
+        function addLoadingBar() {
+            const element = document.getElementById("loadingBar");  // Get the DIV element
+            element.classList.add("d-none"); // Add newone class to DIV
+
+            BtnDisable.disabled = false;
+        }
+
+        function SubmitBTN() {
+            let code = document.getElementById('code').value.trim();
+
+            if (code.length == 0) {
+                errorToast("Code is required");
+            } else if (code.length < 4) {
+                errorToast("Code should be atleast 4 digits!!");
+            } else {
+                removeLoadingBar();
+                setTimeout(() => {
+                    addLoadingBar();
+                    window.location.href = "/reset-password.html";
+                }, 5000)
+            }
+        }
+
+        function successToast(msg) {
+            Toastify({
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                text: msg,
+                className: "mb-5",
+                style: {
+                    background: "green",
+                    borderRadius: "5px"
+                }
+            }).showToast();
+        }
+
+        function errorToast(msg) {
+            Toastify({
+                gravity: "bottom", // `top` or `bottom`
+                position: "center", // `left`, `center` or `right`
+                text: msg,
+                className: "mb-5",
+                style: {
+                    background: "red",
+                    borderRadius: "5px"
+                }
+            }).showToast();
+        }
+
+        function startCountdown(duration, display) {
+            let timer = duration;
+            let minutes, seconds;
+
+            const countdownInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    alert("10 mins countdown is over! Pls send code again");
+                    window.location.href = "./forgot-password.html"
+                }
+            }, 1000); // Update every 1 second
+        }
+
+        window.onload = function () {
+            const tenMinutes = 10 * 60; // 10 minutes in seconds
+            const display = document.getElementById("countdown");
+            startCountdown(tenMinutes, display);
+        };
+    </script>
+
+                <div class="col-lg-12" style="height: 20px;">
+                <div class="d-none" id="loadingBar"></div>
+            </div>
+
+id="BtnDisable"
+onclick="event.preventDefault(); SubmitBTN()"
+
+<div class="pb-2 pt-2 text-center">
+    <span class="fw-bolder">
+        The code will be vaild for 10 mins only:
+    </span>
+    <span class="text-danger fw-bolder" id="countdown">10:00</span>
+</div>
