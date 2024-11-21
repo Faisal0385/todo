@@ -64,9 +64,11 @@
             let code = document.getElementById('code').value.trim();
             if (code.length == 0) {
                 errorToast("Code is required!!")
-            }if(code.length < 4){
+            }
+            if (code.length < 4) {
                 errorToast("Code should be atleast 4 digits")
             }
+            window.location.href = '../auth/reset-password.html'
         }
 
         function successToast(msg) {
